@@ -8,8 +8,9 @@ class Config{
                 if (isset($config[$bit])){
                     $config=$config[$bit];
                 }
-            return $config;
+
             }
+            return $config;
         }
     return false;
     }
