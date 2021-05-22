@@ -24,7 +24,9 @@ class DB{
 
         return self::$instance;
     }
-    public function query ($sql,$params = array()){
+
+
+    public function executeQuery ($sql,$params = array()){
         $this->_error=false;
         if ($this->_query = $this->_pdo->prepare($sql) ){
             $x=1;
@@ -45,14 +47,59 @@ class DB{
 
         return $this;
     }
-    public function error(){
-        return 'de7k';
+
+    private function action ($action ,$table , $where = array()){
+        if (count($where)===3){
+            $allowedOperators = array('>','<' , '=' , '>=' , '<=');
+            $field = $where[0];
+            $operator = $where[1];
+            $value = $where[2];
+            if(in_array($operator,$allowedOperators)){
+                $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ? " ; //temporary we use where
+                if (!$this->executeQuery($sql,array($value))->error()){
+                    return $this;
+
+                }
+            }
+        }
+        return false;
     }
 
-    //add user
-    //view user
-    //delete user
-    //
+    public function get($table,$where = array()){
+        return $this->action('SELECT*' , $table , $where);
+
+    }
+
+
+    public function delete($table,$where = array()){
+        return $this->action('DELETE' , $table , $where);
+
+    }
+
+    //getallwithout where
+    //get specific columns with and without where
+    // if no where so there's no need to call array of modes
+    //do queries with (and or)  array of modes
+    //insert values
+    //update values
+
+
+
+
+
+
+    public function error(){
+        return $this->_error;
+    }
+
+
+
+    public function getRes(){
+        return $this->_results;
+}
+
+
+
 
 
 

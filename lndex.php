@@ -1,11 +1,21 @@
 <?php
 require_once 'core/init.php';
- $DB0 = DB::getInstance()->query('SELECT USERNAME FROM USERS ');
- $DB1 = DB::getInstance()->query('SELECT USERNAME FROM USERS ');
- $DB2 = DB::getInstance()->query('SELECT USERNAME FROM USERS ');
-echo  $DB0->error();
-echo  $DB1->error();
-echo  $DB2->error();
+ $DB0 = DB::getInstance()->executeQuery('SELECT * FROM USERS ');
+ $res = $DB0->getRes();
+ print_r($res);
+ foreach ($res as $x){
+     echo $x->user_name . "<br>";
+ }
+
+
+
+
+
+
+
+
+
+
 
 
 
