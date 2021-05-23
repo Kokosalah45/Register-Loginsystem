@@ -28,6 +28,7 @@ class DB{
 
     public function executeQuery ($sql,$params = array()){
         $this->_error=false;
+
         if ($this->_query = $this->_pdo->prepare($sql) ){
             $x=1;
             if(count($params)){
@@ -48,7 +49,7 @@ class DB{
         return $this;
     }
 
-    private function action ($action ,$table , $where = array()){
+    private function get_delete ($action ,$table , $where = array()){
         if (count($where)===3){
             $allowedOperators = array('>','<' , '=' , '>=' , '<=');
             $field = $where[0];
@@ -66,15 +67,49 @@ class DB{
     }
 
     public function get($table,$where = array()){
-        return $this->action('SELECT*' , $table , $where);
+        return $this->get_delete('SELECT*' , $table , $where);
 
     }
 
 
     public function delete($table,$where = array()){
-        return $this->action('DELETE' , $table , $where);
+        return $this->get_delete('DELETE' , $table , $where);
 
     }
+    public function insert($table ,$fields  ){
+        $keys = array_keys($fields);
+        $values = "" ;
+        $lenOfValues = 0;
+        foreach ($fields as $field){
+            $values.= "?,";
+            $lenOfValues++;
+        } //faster in execution time
+        $values = rtrim($values, $values[($lenOfValues*2)-1]);
+
+        $sql = "INSERT INTO {$table}(" . implode(',',$keys) . ")VALUES({$values}) ";
+        if(!$this->executeQuery($sql , $fields)->error()){
+            return true;
+        }
+
+
+
+        return false;
+    }
+    public function update($table , $fields  ,$id ){
+        //UPDATE CUSTOMERS SET USER_NAME =  KAZA , PASSWORD = KAZA WHERE ID = KAZA;
+        $keys = array();
+        foreach ($fields as $field => $field_value){
+           $keys[] = $field . " = ?";
+        } //faster in execution time
+        $fields['id'] = $id;
+        $sql = "UPDATE {$table} SET " . implode(', ' , $keys). "WHERE ID = ? ";
+        if (!$this->executeQuery($sql , $fields)->error()){
+            return true;
+        }
+            return  false;
+
+    }
+
 
     //getallwithout where
     //get specific columns with and without where
