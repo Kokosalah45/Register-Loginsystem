@@ -3,9 +3,11 @@
 require_once 'core/init.php';
 
 if (Input::exists()){
-     $v = new Validation();
-     $v->check($_POST);
-     print_r($_POST);
+    $v = new Validation();
+    $v->check('post');
+    $v->printErrors();
+
+
 }
 
 ?>

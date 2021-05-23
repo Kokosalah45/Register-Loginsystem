@@ -1,50 +1,51 @@
+
 <?php
 
 class Validation{
     private $_db=null,
-            $_errors = array();
+            $_errors = array(),
+            $pass = false;
 
 
     public function __construct(){
         $this->_db = DB::getInstance();
     }
 
-    public function check ($type){
-
-
+    public function check ($type) : boolean{
+        if ( $this->userNameValidate()){
+            $this->pass = true;
+        }
 
     }
 
-    private function userNameEmpty() {
+    private function userNameValidate()  {
         $username = Input::get('username');
-        if($username != ''){
-            $username = $_POST['username'];
-            if ( $this->userNameLength($username) && $this->userNameFormat($username) &&  $this->userNameUnique($username) ){
-                    return true;
-            }else{
-                return false;
-            }
-
-
-        }else{
+        if($username == ''){
             $this->addErrors("This field is required");
+            return  false;
         }
+        $username = $_POST['username'];
+        $this->userNameFormat($username);
+        $this->userNameLength($username);
+        $this->userNameUnique($username);
 
+            return count($this->_errors) == 0;
     }
     private function userNameFormat($username){
         if (!preg_match("/^[a-zA-Z0-9]*$/",$username)){
-            return true;
+            $this->addErrors("username is not properly formatted");
+            return false;
+
         }
-        $this->addErrors("username is not properly formatted");
-        return false;
+        return true;
 
     }
     private function userNameLength($username){
         $usernameLength = strlen($username);
         if ( $usernameLength < 5 ){
-            addErrors("user name must be at least 5 characters ");
+            $this->addErrors("user name must be at least 5 characters ");
         }else if ($usernameLength > 20){
-            addErrors("user name must be at most 20 characters ");
+            $this->addErrors("user name must be at most 20 characters ");
         }else{
             return true;
         }
@@ -53,19 +54,29 @@ class Validation{
     }
 
 
-    private function userNameUnique($username){
-        $obj = $this->_db->get('users',array('username' , '=' , $username ));
-        if(!isset($obj)){
-            return true;
-        }
+    public function userNameUnique($username){
 
-        $this->addErrors("This username is taken");
-        return false;
+        $row = $this->_db->get('users',array('user_name' , '=' , $username ))->getRes();
+       /* echo " <pre> ";
+        print_r($row);
+        echo " </pre> ";*/
+        if(!empty($row)){
+            $this->addErrors("This username is taken");
+            return false;
+        }
+        return true;
+
+
+
 
     }
 
-    private function addErrors($error){
+    private function addErrors($error) {
         $this->_errors[] = $error;
+    }
+    public function printErrors() {
+        print_r($this->_errors);
+
     }
 
 

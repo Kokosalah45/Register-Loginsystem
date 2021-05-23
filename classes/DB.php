@@ -8,6 +8,7 @@ class DB{
            $_results,
            $_count = 0;
 
+
     private  function __construct() // conncetion
     {
         try{
@@ -16,7 +17,9 @@ class DB{
         }catch (PDOException $e){
             die($e->getMessage());
         }
+
     }
+
     public static  function  getInstance (){
         if (!isset(self::$instance)){
             self::$instance = new DB();
