@@ -25,11 +25,13 @@ class Validation{
     }
 
     public function check ($type) {
-        if ( $this->userNameValidate() || $this->passwordValidate()){
+        $userPass = $this->userNameValidate();
+        $passPass = $this->passwordValidate();
+
+        if ( $userPass && $passPass ){
             return true;
         }
         return false;
-
 
     }
 
@@ -138,7 +140,7 @@ class Validation{
         if ($repeatedPass == ''){
             $this->addErrors("repeatedpasswordrequired");
         }
-        if (!Input::get("password_again")==$password){
+        if ($repeatedPass!=$password){
             $this->addErrors("password!match");
         }
     }

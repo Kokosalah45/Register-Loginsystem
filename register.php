@@ -2,17 +2,17 @@
 
 require_once 'core/init.php';
 
-if (Input::exists()){
+if (Input::exists() && Token::check() ){
     $v = new Validation();
     if($v->check('post')){
-        //register user
+        echo "passed";
     }else{
         $errors = $v->getErrors();
-        print_r($errors);
+
     }
 }
-
 ?>
+<?php $tokenGenerated = Token::generate(); Session::put(Config::get('session/CSRF'),$tokenGenerated);   ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -33,7 +33,9 @@ if (Input::exists()){
         <input type="password" name="password" id="password" value="" autocomplete="off">
     </div>
     <div>
+
         <label for="password_again">Type your password again :  </label>
+        <input type="hidden" name="token" id="token" value = "<?php echo $tokenGenerated ?>" autocomplete="off">
         <input type="password" name="password_again" id="password_again" value="" autocomplete="off">
     </div>
     <button type="submit" VALUE="register">SUBMIT</button>

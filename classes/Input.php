@@ -8,9 +8,8 @@ class Input {
                 return !empty($_GET);
 
             default : return false;
-
         }
-            return  ' ';
+
     }
 
 

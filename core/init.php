@@ -13,7 +13,8 @@ $GLOBALS['config'] = array(
     ),
 
     'session' => array(
-        'session_name' => 'user'
+        'session_name' => 'user',
+        'CSRF' => "token"
     )
 
 
