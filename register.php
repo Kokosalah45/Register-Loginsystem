@@ -2,7 +2,7 @@
 
 require_once 'core/init.php';
 
-if (Input::exists() && Token::check() ){
+if ( Token::check() && Input::exists() ){
     $v = new Validation();
     if($v->check('post')){
         echo "passed";
