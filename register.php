@@ -4,10 +4,12 @@ require_once 'core/init.php';
 
 if (Input::exists()){
     $v = new Validation();
-    $v->check('post');
-    $v->printErrors();
-
-
+    if($v->check('post')){
+        //register user
+    }else{
+        $errors = $v->getErrors();
+        print_r($errors);
+    }
 }
 
 ?>
