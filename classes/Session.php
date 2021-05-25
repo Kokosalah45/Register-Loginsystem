@@ -1,5 +1,6 @@
 <?php
 class Session{
+    //general Session methods
     public static function put($sessionKey , $item) : String {
         return $_SESSION[$sessionKey] = $item;
     }
@@ -15,6 +16,7 @@ class Session{
             unset($_SESSION[$sessionKey]);
         }
     }
+    //methods for specific use
     public static function flashMessage ($messageKey , $message = '') {
         if (self::exists($messageKey)){
             $message = self::get($messageKey);
@@ -24,4 +26,9 @@ class Session{
         self::put($messageKey,$message);
 
     }
+    public static function putToken ($tokenName ,$token) {
+        self::put($tokenName,$token);
+
+    }
+
 }

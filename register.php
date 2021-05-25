@@ -1,12 +1,12 @@
 <?php
 
 require_once 'core/init.php';
+$v = new Validation();
+if ( $v->tokenCheck() && Input::exists() ){
 
-if ( Token::check() && Input::exists() ){
-    $v = new Validation();
-    if($v->check('post')){
+    if($v->fieldsCheck('post')){
         Session::flashMessage('success' , 'registeration is successful ');
-        header('Location : index.php');
+        header('Location: index.php');
 
     }else{
         $errors = $v->getErrors();
@@ -15,7 +15,7 @@ if ( Token::check() && Input::exists() ){
     }
 }
 ?>
-<?php $tokenGenerated = Token::generate(); Session::put(Config::get('session/CSRF'),$tokenGenerated);   ?>
+<?php $tokenGenerated = Token::generate(); Session::putToken(Config::get('session/CSRF'),$tokenGenerated);   ?>
 <!doctype html>
 <html lang="en">
 <head>
