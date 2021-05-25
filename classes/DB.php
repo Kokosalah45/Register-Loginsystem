@@ -79,7 +79,7 @@ class DB{
         return $this->get_delete('DELETE' , $table , $where);
 
     }
-    public function insert($table ,$fields  ){
+    public function insert($table ,$fields ){
         $keys = array_keys($fields);
         $values = "" ;
         $lenOfValues = 0;

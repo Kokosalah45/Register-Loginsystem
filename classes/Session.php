@@ -1,18 +1,27 @@
 <?php
 class Session{
-    public static function put($name , $generatedToken) : String {
-        return $_SESSION[$name] = $generatedToken;
+    public static function put($sessionKey , $item) : String {
+        return $_SESSION[$sessionKey] = $item;
     }
-    public static function exists($tokenName)  {
-        return isset($_SESSION[$tokenName]);
+    public static function exists($sessionKey)  {
+        return isset($_SESSION[$sessionKey]);
     }
-    public static function get($tokenName)  {
-        return $_SESSION[$tokenName];
+    public static function get($sessionKey)  {
+        return $_SESSION[$sessionKey];
     }
 
-    public static function delete($tokenName){
-        if (self::exists($tokenName)){
-            unset($_SESSION[$tokenName]);
+    public static function delete($sessionKey){
+        if (self::exists($sessionKey)){
+            unset($_SESSION[$sessionKey]);
         }
+    }
+    public static function flashMessage ($messageKey , $message = '') {
+        if (self::exists($messageKey)){
+            $message = self::get($messageKey);
+            self::delete($messageKey);
+            return $message;
+        }
+        self::put($messageKey,$message);
+
     }
 }

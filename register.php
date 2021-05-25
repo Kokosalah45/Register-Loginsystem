@@ -5,9 +5,12 @@ require_once 'core/init.php';
 if ( Token::check() && Input::exists() ){
     $v = new Validation();
     if($v->check('post')){
-        echo "passed";
+        Session::flashMessage('success' , 'registeration is successful ');
+        header('Location : index.php');
+
     }else{
         $errors = $v->getErrors();
+        print_r($errors);
 
     }
 }

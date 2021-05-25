@@ -25,10 +25,10 @@ class Validation{
     }
 
     public function check ($type) {
-        $userPass = $this->userNameValidate();
-        $passPass = $this->passwordValidate();
+       $usernamePass = $this->userNameValidate();
+       $passwordPass = $this->passwordValidate();
 
-        if ( $userPass && $passPass ){
+        if ( $usernamePass && $passwordPass ){
             return true;
         }
         return false;
